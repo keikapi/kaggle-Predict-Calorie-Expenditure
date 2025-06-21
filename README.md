@@ -1,6 +1,7 @@
 # kaggle-Predict-Calorie-Expenditure
 
 ## 1. コンペ進め方（ステップバイステップ）
+※固定化/自動化できる部分があれば適宜改善していきたい
 
 ① コンペ内容の理解
 
@@ -12,29 +13,30 @@ SageMaker StudioでNotebook環境を用意し、S3とGitHubを接続。
 
 ③ EDA（探索的データ分析）
 
-各特徴量の分布・相関・欠損値チェック。仮説を立てる。
+各特徴量の分布・相関・欠損値チェック。どのような前処理/モデリング/CV設計/アンサンブルが効果的か仮説を立てる。
+ノートブック上で実行する。
+※可視化にBIツールは利用する？
+ノート命名規則：EDA.ipynb
 
-④ 前処理
+④ 前処理(CV設計)
 
-スケーリング、欠損補完、カテゴリ変数エンコードなど。
+スケーリング、欠損補完、カテゴリ変数エンコード等の前処理を実施する。
+前処理ごとに、CV設計を実施する。CV設計では、KFoldやTimeSeriesSplit(時系列性があるデータをデータリークしないようにする)、StratifiedKFold(目的変数の分布をfold間で揃える)、GroupKFold(同一系列のデータを同じfoldに入れる)等を利用し、LBと同等の性質を持つCVを設計できることをゴールとする。
+sagemaker processing jobをノートブック上で実行する。
+ノート命名規則：Preprocess.ipynb
+スクリプト命名規則：{コンペ名}_Preprocess{前処理番号}_CV{CV番号}.py
 
 ⑤ モデリング
 
-XGBoost / LightGBM / RandomForest / NNなどから試す。
+XGBoost / LightGBM / RandomForest / NNなどから試す。アンサンブル(複数モデルの平均・スタッキング)も適宜実施する。
+sagemaker training jobをノートブック上で実行する。
+ノート命名規則：Modeling.ipynb
+スクリプト命名規則：{コンペ名}_Modeling{モデリング番号}.py
 
-⑥ 評価・CV設計
+⑥ 評価と提出
 
-KFoldやStratifiedKFoldで交差検証し、CVとLBの差を把握。
-
-⑦ アンサンブル
-
-複数モデルの平均・スタッキングで性能向上を狙う。
-
-⑧ 提出と分析
-
-Submit後、スコア・フィードバックを基に改善を繰り返す。
-
-
+モデリング時に、sagemaker experimentに登録するようにする。評価指標がある閾値を超えた場合に結果を提出するようにする。
+評価結果を基に改善を繰り返す。
 
 ## 2. データ管理
 
@@ -47,7 +49,7 @@ kaggle-Predict-Calorie-Expenditure/
 
 data/  　軽量サンプルデータ or metadata（.gitignore推奨）
 
-notebooks/   　分析用Notebook（EDA, Model, Ensemble）
+notebooks/   　分析用Notebook（EDA, Preprocess, Modeling）
 
 scripts/    　モデル構築・学習・推論用スクリプト（.py）
 
@@ -58,8 +60,6 @@ outputs/      　ローカル検証用submitファイル、予測結果（.gitig
 requirements.txt     　依存ライブラリ
 
 README.md       　プロジェクト概要
-
-
 
 ### ・S3（中間生成物・成果物ストレージ）
 
