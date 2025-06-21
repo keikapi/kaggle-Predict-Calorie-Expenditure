@@ -9,7 +9,7 @@
 
 ② 環境準備
 
-SageMaker StudioでNotebook環境を用意し、S3とGitHubを接続。
+SageMaker StudioでNotebook環境を用意し、S3とGitHub(最適な使い方が分からない)を接続。
 
 ③ EDA（探索的データ分析）
 
