@@ -80,4 +80,8 @@ auth/　認証情報
 ## 3. メタデータ管理
 
 AWS Glue Data Catalogを利用して、メタデータ管理を実施します。
+
+## 4. ChatGPTチャットリンク
+
+https://chatgpt.com/share/6820917f-d2e0-800c-968b-cf54c4bf7f3e
  
