@@ -55,7 +55,7 @@ scripts/    　モデル構築・学習・推論用スクリプト（.py）
 
 config/       　ハイパーパラメータや環境設定（YAML/JSON）
 
-outputs/      　ローカル検証用submitファイル、予測結果（.gitignore）
+outputs/      　ローカル検証用submitファイル、予測結果（個人検証用）
 
 requirements.txt     　依存ライブラリ
 
